@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pro Gridiron — Franchise</title>
+<meta name="description" content="Pro Gridiron — Franchise: a flick-based football game with dino &amp; animal players. Quick Play, a 32-team franchise, scenarios, and full offline play for iPhone and iPad.">
+<link rel="canonical" href="https://vpservicesusa.github.io/ProGridiron/">
+<link rel="icon" type="image/png" href="icon.png">
+
+<!-- Open Graph / social -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pro Gridiron">
+<meta property="og:title" content="Pro Gridiron — Franchise">
+<meta property="og:description" content="Flick-based football with dino &amp; animal players. Draft a squad, run a 32-team franchise, play fully offline.">
+<meta property="og:url" content="https://vpservicesusa.github.io/ProGridiron/">
+<meta property="og:image" content="https://vpservicesusa.github.io/ProGridiron/icon.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pro Gridiron — Franchise">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#08152e;          /* deep stadium navy */
+    --bg2:#0a2550;
+    --panel:#10274a;       /* card surface */
+    --line:rgba(255,255,255,.10);
+    --ink:#eef5ef;
+    --muted:rgba(238,245,239,.62);
+    --home:#ff6a2b;        /* home orange */
+    --away:#39b7d6;        /* away cyan */
+    --gold:#f5c21f;        /* first-down yellow */
+    --turf:#1f7a3d;        /* field green */
+    --turf-dark:#13502a;
+    --maxw:920px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{animation:none !important;transition:none !important} }
+  body{
+    background:
+      radial-gradient(1200px 700px at 50% -18%, #143a6e 0%, var(--bg) 60%) fixed,
+      var(--bg);
+    color:var(--ink);
+    font-family:'Outfit',system-ui,-apple-system,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:64px;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+  a{color:var(--away);text-decoration:none}
+  a:hover{color:var(--gold)}
+  ::selection{background:var(--gold);color:#1a1408}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+  /* ---- nav ---- */
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(8,21,46,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex;align-items:center;gap:16px;height:60px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:.03em;font-size:18px}
+  .brand img{width:32px;height:32px;border-radius:8px;border:1px solid var(--line)}
+  .navlinks{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+  .navlinks a{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:12px;color:var(--ink);padding:8px 12px;border:1px solid var(--line);border-radius:9px}
+  .navlinks a:hover{border-color:var(--gold);color:var(--gold)}
+
+  /* ---- hero ---- */
+  header.hero{position:relative;overflow:hidden;padding:56px 0 0}
+  .hero .wrap{display:flex;gap:34px;align-items:center;flex-wrap:wrap;justify-content:center;text-align:center}
+  .hero-icon{width:148px;height:148px;border-radius:30px;border:1px solid rgba(47,128,255,.3);box-shadow:0 18px 50px rgba(0,0,0,.6)}
+  .hero-copy{max-width:520px}
+  .eyebrow{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:.34em;font-size:12px;color:var(--gold);margin-bottom:8px}
+  .hero h1{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:clamp(40px,9vw,68px);line-height:.86;letter-spacing:.01em}
+  .hero h1 .pro{color:var(--ink)}
+  .hero h1 .grid{color:var(--gold);display:block}
+  .hero .tag{margin-top:14px;color:var(--muted);font-size:17px}
+  .hero .by{margin-top:14px;font-size:13px;color:var(--muted)}
+  .hero .by a{color:var(--away)}
+
+  /* the field: signature element — a strip of turf with yard lines + gold first-down marker */
+  .field{position:relative;height:74px;margin-top:42px;
+    background:repeating-linear-gradient(90deg,var(--turf) 0 64px,var(--turf-dark) 64px 128px);
+    border-top:2px solid rgba(255,255,255,.4);border-bottom:2px solid rgba(255,255,255,.4)}
+  .field::before{content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(90deg,transparent 0 62px,rgba(255,255,255,.55) 62px 64px)}
+  .field::after{content:"";position:absolute;top:0;bottom:0;left:50%;width:4px;background:var(--gold);box-shadow:0 0 16px var(--gold)}
+
+  /* ---- sections ---- */
+  section{padding:54px 0 0;scroll-margin-top:76px}
+  .sec-head{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:.02em;font-size:clamp(26px,5vw,36px);display:flex;align-items:center;gap:14px}
+  .sec-head::before{content:"";width:30px;height:4px;background:var(--gold);border-radius:2px}
+  .lead{color:var(--muted);margin-top:10px;font-size:17px;max-width:680px}
+
+  .grid-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:26px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 12px 34px rgba(0,0,0,.32)}
+  .card h3{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:.02em;font-size:18px;margin-bottom:6px}
+  .card h3 .dot{color:var(--home)}
+  .card p{color:var(--muted);font-size:15px}
+
+  /* support block */
+  .support{background:linear-gradient(180deg,var(--bg2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:28px;margin-top:26px}
+  .support .email{font-family:'Anton',sans-serif;font-size:clamp(20px,4vw,28px);letter-spacing:.02em;margin:6px 0 4px;word-break:break-all}
+  .support p{color:var(--muted)}
+
+  /* faq */
+  details{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden}
+  details[open]{border-color:rgba(245,194,31,.5)}
+  summary{cursor:pointer;list-style:none;padding:16px 18px;font-weight:600;display:flex;justify-content:space-between;gap:12px;align-items:center}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-family:'Anton',sans-serif;color:var(--gold);font-size:22px;line-height:1}
+  details[open] summary::after{content:"–"}
+  details .body{padding:0 18px 18px;color:var(--muted)}
+  details .body strong{color:var(--ink)}
+
+  /* privacy */
+  .policy{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px;margin-top:26px}
+  .policy .updated{font-size:13px;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;font-family:'Anton',sans-serif}
+  .policy h3{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:.02em;font-size:19px;margin:24px 0 8px}
+  .policy p,.policy li{color:var(--muted)}
+  .policy ul{margin:8px 0 0 20px}
+  .policy li{margin:5px 0}
+
+  footer{margin-top:64px;border-top:1px solid var(--line);padding-top:24px;text-align:center;color:var(--muted);font-size:14px}
+  footer .ft-title{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--ink)}
+
+  @media (max-width:560px){
+    .hero .wrap{gap:22px}
+    .navlinks{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span class="brand"><img src="icon.png" alt="Pro Gridiron icon">Pro Gridiron</span>
+    <nav class="navlinks">
+      <a href="#features">The Game</a>
+      <a href="#support">Support</a>
+      <a href="#faq">FAQ</a>
+      <a href="#privacy">Privacy</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <img class="hero-icon" src="icon.png" alt="Pro Gridiron app icon">
+    <div class="hero-copy">
+      <div class="eyebrow">iPhone &amp; iPad</div>
+      <h1><span class="pro">Pro</span><span class="grid">Gridiron</span></h1>
+      <p class="tag">Flick-based football with a roster of dino &amp; animal players. Draft a squad, flick your way down the field, and run a full 32-team franchise.</p>
+      <p class="by">By Kevin Petersen · <a href="mailto:kevinpetersen2110@gmail.com">kevinpetersen2110@gmail.com</a></p>
+    </div>
+  </div>
+  <div class="field" aria-hidden="true"></div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ FEATURES ============ -->
+  <section id="features">
+    <h2 class="sec-head">On the field</h2>
+    <p class="lead">Drag back to set your aim and power, then release to throw, kick, or run. Easy to pick up — with a franchise deep enough to lose a season in.</p>
+    <div class="grid-cards">
+      <div class="card">
+        <h3><span class="dot">▸</span> Quick Play</h3>
+        <p>Draft a squad and play a one-off game. Pick your teams, set the clock, and flick it out.</p>
+      </div>
+      <div class="card">
+        <h3><span class="dot">▸</span> Franchise</h3>
+        <p>Run one of 32 teams across seasons: draft, free agency, trades, scouting, the playoffs, and a hall of retired GMs, coaches, and owners.</p>
+      </div>
+      <div class="card">
+        <h3><span class="dot">▸</span> Build the club</h3>
+        <p>Upgrade your stadium, rebrand, or relocate the franchise. Develop young players and chase a title.</p>
+      </div>
+      <div class="card">
+        <h3><span class="dot">▸</span> Scenarios</h3>
+        <p>Jump into a hand-crafted moment and win the situation — then build your own playoff brackets.</p>
+      </div>
+      <div class="card">
+        <h3><span class="dot">▸</span> Plays offline</h3>
+        <p>The whole game runs on your device. No account, no connection needed.</p>
+      </div>
+      <div class="card">
+        <h3><span class="dot">▸</span> Carry your save</h3>
+        <p>Multiple save slots and player profiles. Export a save to Files or AirDrop, and import it on another device.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SUPPORT ============ -->
+  <section id="support">
+    <h2 class="sec-head">Support</h2>
+    <div class="support">
+      <p>Need help, found a bug, or have an idea? Email me:</p>
+      <div class="email"><a href="mailto:kevinpetersen2110@gmail.com">kevinpetersen2110@gmail.com</a></div>
+      <p>I read every message and usually reply within a few days. Telling me your device and iOS version helps me track things down faster.</p>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq">
+    <h2 class="sec-head">FAQ</h2>
+
+    <details open>
+      <summary>How do I play?</summary>
+      <div class="body">Drag back from your player to set the direction and power, then release. The same flick controls your passes, kicks, and runs. The main menu and team-setup screens walk you through choosing teams and starting a game.</div>
+    </details>
+
+    <details>
+      <summary>What game modes are there?</summary>
+      <div class="body"><strong>Quick Play</strong> for a single game, and <strong>Franchise</strong> for a 32-team league you run over multiple seasons — drafting, trading, scouting, managing your stadium and finances, and chasing the playoffs. There are also one-off <strong>Scenarios</strong> and custom playoff brackets.</div>
+    </details>
+
+    <details>
+      <summary>Can I play without the internet?</summary>
+      <div class="body">Yes. Pro Gridiron is fully playable offline. The first time you launch with a connection it loads its display fonts for nicer type, but every part of the game — logic, saves, and sound — works with no connection at all.</div>
+    </details>
+
+    <details>
+      <summary>How are my games saved?</summary>
+      <div class="body">Everything is stored locally on your device, including your franchises, profiles, stats, and records. There are multiple save slots so you can keep more than one franchise going at once.</div>
+    </details>
+
+    <details>
+      <summary>How do I back up or move a save?</summary>
+      <div class="body">Use <strong>Export Save</strong> to send a save file to the Files app, AirDrop, or anywhere the iOS share sheet reaches. On another device, use <strong>Import Save</strong> to load it back in.</div>
+    </details>
+
+    <details>
+      <summary>How do I reset my progress?</summary>
+      <div class="body">Deleting the app from your device removes all of its local data and gives you a clean start. You can also start a fresh franchise at any time from the menu without affecting your other save slots.</div>
+    </details>
+
+    <details>
+      <summary>Are there ads or in-app purchases?</summary>
+      <div class="body">The current version has no ads and no in-app purchases — it's the whole game, start to finish.</div>
+    </details>
+
+    <details>
+      <summary>Is there an online or multiplayer mode?</summary>
+      <div class="body">Not yet. The current release is single-player. Online play is something I'm exploring for a future update — email me if there's a mode you'd like to see.</div>
+    </details>
+
+    <details>
+      <summary>What ages is it for?</summary>
+      <div class="body">Family-friendly throughout. The players are cartoon dinosaurs and animals, and there's no graphic content — just football.</div>
+    </details>
+
+    <details>
+      <summary>What devices does it run on?</summary>
+      <div class="body">iPhone and iPad running iOS 15 or later. The game plays in landscape.</div>
+    </details>
+  </section>
+
+  <!-- ============ PRIVACY ============ -->
+  <section id="privacy">
+    <h2 class="sec-head">Privacy Policy</h2>
+    <div class="policy">
+      <p class="updated">Last updated: June 2026</p>
+
+      <p style="margin-top:14px">Pro Gridiron — Franchise (“the App”) is a locally-stored, device-only application. The App does not collect, transmit, store, sell, or share any personal data with any party.</p>
+
+      <h3>What we store locally</h3>
+      <p>The App uses your device’s local storage to save:</p>
+      <ul>
+        <li>Your franchises, player profiles, and customization choices</li>
+        <li>Your game progress, statistics, records, and achievements</li>
+        <li>Your in-app preferences (sound, difficulty, active profile, and similar)</li>
+      </ul>
+      <p style="margin-top:10px">This data stays on your device. It is not transmitted to any server, and the developer has no access to it.</p>
+
+      <h3>No third-party services</h3>
+      <p>The App does not use any third-party analytics, advertising, tracking, or crash-reporting services.</p>
+
+      <h3>No purchases</h3>
+      <p>The App contains no in-app purchases and no real-money transactions.</p>
+
+      <h3>Children</h3>
+      <p>The App is suitable for all ages. Because it does not collect any personal data, it complies with COPPA (the US Children’s Online Privacy Protection Act) and similar laws by not collecting anything from users of any age in the first place.</p>
+
+      <h3>Data deletion</h3>
+      <p>All App data is stored on your device. To remove everything, delete the App — iOS will remove all of its associated data.</p>
+
+      <h3>Contact</h3>
+      <p>Questions about this policy? Email <a href="mailto:kevinpetersen2110@gmail.com">kevinpetersen2110@gmail.com</a>.</p>
+
+      <h3>Changes</h3>
+      <p>This policy may be updated. Changes take effect when posted on this page with a new “Last updated” date.</p>
+
+      <!--
+        ============================================================
+        READY-TO-USE BLOCK FOR WHEN YOU ADD ADS AND/OR ONLINE MODES
+        ------------------------------------------------------------
+        When you ship a version with ads or any online/account feature,
+        the "no third-party services / no purchases / device-only"
+        statements above stop being true. Replace the relevant sections
+        with versions like the ones below, fill in the real provider
+        names, and bump the "Last updated" date. Also update Apple's
+        App Privacy details in App Store Connect to match.
+
+        <h3>Advertising</h3>
+        <p>The App displays ads through [AD NETWORK, e.g. Google AdMob].
+        To serve ads, the ad provider may collect device identifiers,
+        approximate location, and usage information. See the provider's
+        privacy policy at [URL]. You can limit ad tracking in your
+        device's privacy settings.</p>
+
+        <h3>Online features</h3>
+        <p>If you use online modes (such as [leaderboards / online play /
+        cloud saves]), the App sends [WHAT DATA — e.g. your chosen
+        display name, scores, and game state] to our servers to provide
+        that feature. We use this only to operate the online features and
+        do not sell it. Data is retained [HOW LONG] and you can request
+        deletion by emailing the address below.</p>
+        ============================================================
+      -->
+    </div>
+  </section>
+
+  <footer>
+    <p class="ft-title">Pro Gridiron — Franchise</p>
+    <p>© 2026 Kevin Petersen · <a href="#support">Support</a> · <a href="#privacy">Privacy</a></p>
+  </footer>
+
+</main>
+</body>
+</html>
